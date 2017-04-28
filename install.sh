@@ -1,7 +1,7 @@
 #!/bin/bash
 software(){
-    sudo apt update && sudo dist-upgrade
-    sudo apt install -y curl git zsh vim tmux aria2
+    sudo apt update && sudo apt -y dist-upgrade
+    sudo apt install -y curl git zsh vim tmux aria2 make
     # vim-gnome
 }
 
@@ -46,28 +46,25 @@ snapper(){
     sudo snapper -c root create-config /
 }
 
-main(){
-    if [ ! -f ~/.dotfiles ]; then 
-        git clone https://github.com/izuolan/dotfiles.git ~/.dotfiles
-    else
-        echo ".dotfiles 已经存在，更新脚本。"
-        cd ~/.dotfiles && git pull
-    fi
-    hostname $1
-    sed -i "s:ARIA2_PASSWORD:$2:g" ~/.dotfiles/config/aria2.conf
-    software
-    hosts
-    zsh
-    source .zshrc
-    tmux
-    docker
-    proxychains4
-    snapper
-    vim
-}
-
 help(){
     echo "./init.sh <hostname> <aria2_rpc_password>"
 }
 
-main
+if [ ! -f ~/.dotfiles ]; then 
+    git clone https://github.com/izuolan/dotfiles.git ~/.dotfiles
+else
+    echo ".dotfiles 已经存在，更新脚本。"
+    cd ~/.dotfiles && git pull
+fi
+hostname $1
+sed -i "s:ARIA2_PASSWORD:$2:g" ~/.dotfiles/config/aria2.conf
+chmod a+x script/*
+software
+hosts
+docker
+proxychains4
+zsh
+source .zshrc
+tmux
+vim
+snapper
