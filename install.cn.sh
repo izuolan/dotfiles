@@ -25,7 +25,7 @@ proxychains4(){
 }
 
 ss_start(){
-    nohup sslocal -c ~/.dotfiles/config/sslocal.json &
+    nohup sslocal -c ~/.dotfiles/config/sslocal.json >/dev/null 2>&1
 }
 
 docker(){
