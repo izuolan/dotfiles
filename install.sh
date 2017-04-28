@@ -43,8 +43,7 @@ else
     echo ".dotfiles already exists, so just update this script."
     cd ~/.dotfiles && git pull
 fi
-hostname $1
-sed -i "s:ARIA2_PASSWORD:$2:g" ~/.dotfiles/config/aria2.conf
+sed -i "s:ARIA2_PASSWORD:$1:g" ~/.dotfiles/config/aria2.conf
 chmod a+x ~/.dotfiles/script/*
 software
 docker

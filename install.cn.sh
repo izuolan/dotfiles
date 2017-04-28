@@ -65,8 +65,7 @@ else
     cd ~/.dotfiles && git pull
 fi
 echo "请编辑 ~/.dotfiles/config/sslocal.json 这个文件，配置代理。"
-hostname $1
-sed -i "s:ARIA2_PASSWORD:$2:g" ~/.dotfiles/config/aria2.conf
+sed -i "s:ARIA2_PASSWORD:$1:g" ~/.dotfiles/config/aria2.conf
 chmod a+x ~/.dotfiles/script/*
 software
 hosts
