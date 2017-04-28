@@ -17,12 +17,11 @@ hosts(){
 }
 
 proxychains4(){
-    VERSION=4.12
-    wget https://github.com/rofl0r/proxychains-ng/releases/download/v${VERSION}/proxychains-ng-${VERSION}.tar.xz -O /tmp/proxychains-ng-${VERSION}.tar.xz
-    cd /tmp && tar xf /tmp/proxychains-ng-${VERSION}.tar.xz && cd proxychains-ng-${VERSION}
-	sudo ./configure –prefix=/usr –sysconfdir=/etc
+    git clone https://git.oschina.net/zuolan/proxychains-ng.git /tmp/proxychains-ng
+	cd /tmp/proxychains-ng
+    sudo ./configure –prefix=/usr –sysconfdir=/etc
 	sudo make && sudo make install && sudo make install-config
-    rm -rf /tmp/proxychains-ng-${VERSION}
+    rm -rf /tmp/proxychains-ng
 }
 
 ss_start(){
@@ -54,9 +53,31 @@ tmux(){
     cp .tmux/.tmux.conf.local .
 }
 
-help(){
-    echo "./install.sh <hostname> <aria2_rpc_password>"
+aria2_config(){
+    echo -n "Please enter the Aria2 remote password (can be downloaded remote monitoring progress):"; read -s PASS;echo ""
+    sed -i "s:ARIA2_PASSWORD:$2:g" ~/.dotfiles/config/aria2.conf
+    echo "successfully."
 }
+ss_config(){
+    echo "现在配置 Shadowsocks 代理。"
+    echo -n "请输入 Shadowsocks 账号的 IP:"; read SS_SERVER_IP;echo ""
+    sed -i "s|"server": ""|"server": "$SS_SERVER_IP"|g" ~/.dotfiles/config/sslocal.json
+    echo -n "请输入 Shadowsocks 账号的端口:"; read SS_SERVER_PORT;echo ""
+    sed -i "s|"server_port": ""|"server_port": "$SS_SERVER_PORT"|g" ~/.dotfiles/config/sslocal.json
+    echo -n "请输入 Shadowsocks 账号的密码（输入不可见）:"; read -s SS_SERVER_PASSWORD;echo ""
+    sed -i "s|"password": ""|"password": "$SS_SERVER_PASSWORD"|g" ~/.dotfiles/config/sslocal.json
+    echo "其他情况请自行编辑 ~/.dotfiles/config/sslocal.json 这个文件以配置代理。"
+}
+while getopts ":p:sh" optname
+  do
+    case "$optname" in
+      "p") aria2_config ;;
+      "s") ss_config ;;
+      "h") echo "使用 -p <aria2_rpc_password> 参数设置 RPC 密码，使用 -s 设置代理。"; exit 0 ;;
+      "?") echo -n "Unknown option:"; $0 -h; exit 1 ;;
+      *) echo -n "Unknown error:"; $0 -h; exit 1 ;;
+    esac
+  done
 
 if [ ! -f ~/.dotfiles ]; then 
     git clone https://github.com/izuolan/dotfiles.git ~/.dotfiles
@@ -64,18 +85,7 @@ else
     echo ".dotfiles 已经存在，更新脚本。"
     cd ~/.dotfiles && git pull
 fi
-echo -n "请输入 Aria2 远程密码（可以远程监控下载进度）:"; read -s PASS;echo ""
-sed -i "s:ARIA2_PASSWORD:$PASS:g" ~/.dotfiles/config/aria2.conf
-echo "密码设置成功。"
 chmod a+x ~/.dotfiles/script/*
-echo "现在配置 Shadowsocks 代理。"
-echo -n "请输入 Shadowsocks 账号的 IP:"; read SS_SERVER_IP;echo ""
-sed -i "s|"server": ""|"server": "$SS_SERVER_IP"|g" ~/.dotfiles/config/sslocal.json
-echo -n "请输入 Shadowsocks 账号的端口:"; read SS_SERVER_PORT;echo ""
-sed -i "s|"server_port": ""|"server_port": "$SS_SERVER_PORT"|g" ~/.dotfiles/config/sslocal.json
-echo -n "请输入 Shadowsocks 账号的密码（输入不可见）:"; read -s SS_SERVER_PASSWORD;echo ""
-sed -i "s|"password": ""|"password": "$SS_SERVER_PASSWORD"|g" ~/.dotfiles/config/sslocal.json
-echo "其他情况请自行编辑 ~/.dotfiles/config/sslocal.json 这个文件以配置代理。"
 software
 hosts
 proxychains4

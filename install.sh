@@ -33,9 +33,21 @@ proxychains4(){
 	sudo make && sudo make install && sudo make install-config
 }
 
-help(){
-    echo "./install.sh <hostname> <aria2_rpc_password>"
+aria2(){
+    echo -n "Please enter the Aria2 remote password (can be downloaded remote monitoring progress):"; read -s PASS;echo ""
+    sed -i "s:ARIA2_PASSWORD:$PASS:g" ~/.dotfiles/config/aria2.conf
+    echo "successfully."
 }
+
+while getopts ":p:h" optname
+  do
+    case "$optname" in
+      "p") aria2 ;;
+      "h") echo "Use -p <aria2_rpc_password> option set RPC password."; exit 0 ;;
+      "?") echo -n "Unknown option:"; $0 -h; exit 1 ;;
+      *) echo -n "Unknown error:"; $0 -h; exit 1 ;;
+    esac
+  done
 
 if [ ! -f ~/.dotfiles ]; then 
     git clone https://github.com/izuolan/dotfiles.git ~/.dotfiles
@@ -43,9 +55,6 @@ else
     echo ".dotfiles already exists, so just update this script."
     cd ~/.dotfiles && git pull
 fi
-echo -n "Please enter the Aria2 remote password (can be downloaded remote monitoring progress):"; read -s PASS;echo ""
-sed -i "s:ARIA2_PASSWORD:$PASS:g" ~/.dotfiles/config/aria2.conf
-echo "successfully."
 chmod a+x ~/.dotfiles/script/*
 software
 docker
