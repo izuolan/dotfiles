@@ -1,5 +1,5 @@
 #! /bin/bash
-CONFIG_PATH="/home/zuolan/Sync/Shell/config"
+CONFIG_PATH="~/.dotfiles/config"
 DEFAULT="g1"
 ORIGIN_COMMAND=$(echo "$@" | sed "s/$1 //g" | sed "s/$2 //g")
 
