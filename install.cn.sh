@@ -22,14 +22,15 @@ proxychains4(){
     sudo ./configure –prefix=/usr –sysconfdir=/etc
 	sudo make && sudo make install && sudo make install-config
     rm -rf /tmp/proxychains-ng
+    echo "Proxychains4 安装成功。"
 }
 
 ss_start(){
-    nohup sslocal -c ~/.dotfiles/config/sslocal.json >/dev/null 2>&1
+    nohup sslocal -c ~/.dotfiles/config/sslocal.json >/dev/null 2>&1 &
 }
 
 docker(){
-    curl -sSL https://get.docker.com/ | sh
+    $PROXY curl -sSL https://get.docker.com/ | sh
     echo "{"registry-mirrors": ["https://docker.mirrors.ustc.edu.cn"]}" > /etc/docker/daemon.json
 }
 
