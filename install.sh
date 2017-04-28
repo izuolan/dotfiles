@@ -1,17 +1,8 @@
 #!/bin/bash
 software(){
     sudo apt update && sudo apt -y dist-upgrade
-    sudo apt install -y curl git zsh vim tmux aria2 make
+    sudo apt install -y curl wget git zsh vim tmux aria2 make
     # vim-gnome
-}
-
-hosts(){
-    wget https://raw.githubusercontent.com/racaljk/hosts/master/hosts -O fetchedhosts
-    mv /etc/hosts /etc/hosts-$(date +%F-%H%M%S).bak
-    sed -i "s/localhost/localhost $(hostname)/g" fetchedhosts
-    sed -i "s/broadcasthost/broadcasthost $(hostname)/g" fetchedhosts
-    mv fetchedhosts /etc/hosts
-    echo Hosts更新完成！！
 }
 
 zsh(){
@@ -42,29 +33,23 @@ proxychains4(){
 	sudo make && sudo make install && sudo make install-config
 }
 
-snapper(){
-    sudo snapper -c root create-config /
-}
-
 help(){
-    echo "./init.sh <hostname> <aria2_rpc_password>"
+    echo "./install.sh <hostname> <aria2_rpc_password>"
 }
 
 if [ ! -f ~/.dotfiles ]; then 
     git clone https://github.com/izuolan/dotfiles.git ~/.dotfiles
 else
-    echo ".dotfiles 已经存在，更新脚本。"
+    echo ".dotfiles already exists, so just update this script."
     cd ~/.dotfiles && git pull
 fi
 hostname $1
 sed -i "s:ARIA2_PASSWORD:$2:g" ~/.dotfiles/config/aria2.conf
-chmod a+x script/*
+chmod a+x ~/.dotfiles/script/*
 software
-hosts
 docker
 proxychains4
 zsh
 source .zshrc
 tmux
 vim
-snapper
