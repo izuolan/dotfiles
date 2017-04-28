@@ -1,6 +1,6 @@
 #! /bin/bash
 CONFIG_PATH="~/.dotfiles/config"
-DEFAULT="g1"
+DEFAULT="proxychains4"
 ORIGIN_COMMAND=$(echo "$@" | sed "s/$1 //g" | sed "s/$2 //g")
 
 config_file(){
