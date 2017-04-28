@@ -47,8 +47,12 @@ snapper(){
 }
 
 main(){
-    rm -rf ~/.dotfiles
-    git clone https://github.com/izuolan/dotfiles.git ~/.dotfiles
+    if [ ! -f ~/.dotfiles ]; then 
+        git clone https://github.com/izuolan/dotfiles.git ~/.dotfiles
+    else
+        echo ".dotfiles 已经存在，更新脚本。"
+        cd ~/.dotfiles && git pull
+    fi
     hostname $1
     sed -i "s:ARIA2_PASSWORD:$2:g" ~/.dotfiles/config/aria2.conf
     software
@@ -65,3 +69,5 @@ main(){
 help(){
     echo "./init.sh <hostname> <aria2_rpc_password>"
 }
+
+main
