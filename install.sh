@@ -43,7 +43,9 @@ else
     echo ".dotfiles already exists, so just update this script."
     cd ~/.dotfiles && git pull
 fi
-sed -i "s:ARIA2_PASSWORD:$1:g" ~/.dotfiles/config/aria2.conf
+echo -n "Please enter the Aria2 remote password (can be downloaded remote monitoring progress):"; read -s PASS;echo ""
+sed -i "s:ARIA2_PASSWORD:$PASS:g" ~/.dotfiles/config/aria2.conf
+echo "successfully."
 chmod a+x ~/.dotfiles/script/*
 software
 docker

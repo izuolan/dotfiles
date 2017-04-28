@@ -64,9 +64,18 @@ else
     echo ".dotfiles 已经存在，更新脚本。"
     cd ~/.dotfiles && git pull
 fi
-echo "请编辑 ~/.dotfiles/config/sslocal.json 这个文件，配置代理。"
-sed -i "s:ARIA2_PASSWORD:$1:g" ~/.dotfiles/config/aria2.conf
+echo -n "请输入 Aria2 远程密码（可以远程监控下载进度）:"; read -s PASS;echo ""
+sed -i "s:ARIA2_PASSWORD:$PASS:g" ~/.dotfiles/config/aria2.conf
+echo "密码设置成功。"
 chmod a+x ~/.dotfiles/script/*
+echo "现在配置 Shadowsocks 代理。"
+echo -n "请输入 Shadowsocks 账号的 IP:"; read SS_SERVER_IP;echo ""
+sed -i "s|"server": ""|"server": "$SS_SERVER_IP"|g" ~/.dotfiles/config/sslocal.json
+echo -n "请输入 Shadowsocks 账号的端口:"; read SS_SERVER_PORT;echo ""
+sed -i "s|"server_port": ""|"server_port": "$SS_SERVER_PORT"|g" ~/.dotfiles/config/sslocal.json
+echo -n "请输入 Shadowsocks 账号的密码（输入不可见）:"; read -s SS_SERVER_PASSWORD;echo ""
+sed -i "s|"password": ""|"password": "$SS_SERVER_PASSWORD"|g" ~/.dotfiles/config/sslocal.json
+echo "其他情况请自行编辑 ~/.dotfiles/config/sslocal.json 这个文件以配置代理。"
 software
 hosts
 proxychains4
