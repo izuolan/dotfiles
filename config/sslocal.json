@@ -1,0 +1,19 @@
+// {
+//     "server": "ss-server 服务器的 IP",
+//     "server_port": "ss-server 的端口",
+//     "password": "ss-server 设置的密码",
+//     "local_address": "127.0.0.1",
+//     "local_port": "本地 socks5 代理的监听端口"
+//     "method": "与 ss-server 的加密方式一致",
+//     "timeout": "超时时间"
+// }
+
+{
+    "server": "",
+    "server_port": "",
+    "password": "",
+    "local_address": "127.0.0.1",
+    "local_port": "1080"
+    "method": "aes-256-cfb",
+    "timeout": "60"
+}

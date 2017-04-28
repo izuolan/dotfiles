@@ -3,7 +3,7 @@ PROXY="proxychains4 -q -f ~/.dotfiles/config/proxychains4.conf"
 
 software(){
     sudo apt update && sudo apt -y dist-upgrade
-    sudo apt install -y curl wget git zsh vim tmux aria2 make
+    sudo apt install -y curl wget git zsh vim tmux aria2 make shadowsocks
     # vim-gnome
 }
 
@@ -16,28 +16,6 @@ hosts(){
     echo Hosts更新完成！！
 }
 
-docker(){
-    curl -sSL https://get.docker.com/ | sh
-    echo "{"registry-mirrors": ["https://docker.mirrors.ustc.edu.cn"]}" > /etc/docker/daemon.json
-}
-
-ss_start(){
-    docker pull easypi/shadowsocks-libev
-    docker run -dit --name=ss-hk \
-        -p 1080:1080 \
-        --restart=always \
-        easypi/shadowsocks-libev \
-        ss-local \
-            -s $SS_SERVER_IP \
-            -p $SS_SERVER_PORT \
-            -m aes-256-cfb \
-            -k $SS_SERVER_PASSWORD \
-            -b 0.0.0.0 \
-            -l 1080 \
-            -t 60 \
-            --fast-open
-}
-
 proxychains4(){
     VERSION=4.12
     wget https://github.com/rofl0r/proxychains-ng/releases/download/v${VERSION}/proxychains-ng-${VERSION}.tar.xz -O /tmp/proxychains-ng-${VERSION}.tar.xz
@@ -45,6 +23,15 @@ proxychains4(){
 	sudo ./configure –prefix=/usr –sysconfdir=/etc
 	sudo make && sudo make install && sudo make install-config
     rm -rf /tmp/proxychains-ng-${VERSION}
+}
+
+ss_start(){
+    nohup sslocal -c ~/.dotfiles/config/sslocal.json &
+}
+
+docker(){
+    curl -sSL https://get.docker.com/ | sh
+    echo "{"registry-mirrors": ["https://docker.mirrors.ustc.edu.cn"]}" > /etc/docker/daemon.json
 }
 
 zsh(){
@@ -77,15 +64,15 @@ else
     echo ".dotfiles 已经存在，更新脚本。"
     cd ~/.dotfiles && git pull
 fi
-
+echo "请编辑 ~/.dotfiles/config/sslocal.json 这个文件，配置代理。"
 hostname $1
 sed -i "s:ARIA2_PASSWORD:$2:g" ~/.dotfiles/config/aria2.conf
 chmod a+x ~/.dotfiles/script/*
 software
 hosts
-docker
-ss_start
 proxychains4
+ss_start
+docker
 zsh
 source .zshrc
 tmux
