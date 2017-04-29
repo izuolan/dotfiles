@@ -11,11 +11,11 @@ bash ~/.dotfiles/install.sh -p <aria2_rpc_password>
 ```
 
 # For China:
-```
-curl -sSL https://git.io/Dotfiles_CN | bash
-```
-
-Set Shadowsocks:
+Clone this repo to $HOME/.dotfiles, and then set Shadowsocks:
 ```
 bash ~/.dotfiles/install.cn.sh -s
+```
+Finaly:
+```
+curl -sSL https://git.io/Dotfiles_CN | bash
 ```

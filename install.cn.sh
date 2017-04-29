@@ -17,21 +17,26 @@ hosts(){
 }
 
 proxychains4(){
-    git clone https://git.oschina.net/zuolan/proxychains-ng.git /tmp/proxychains-ng
-	cd /tmp/proxychains-ng
-    sudo ./configure –prefix=/usr –sysconfdir=/etc
-	sudo make && sudo make install && sudo make install-config
-    rm -rf /tmp/proxychains-ng
-    echo "Proxychains4 安装成功。"
+    command -v proxychains4 >/dev/null 2>&1
+    if [ $? != 0 ]; then 
+        git clone https://git.oschina.net/zuolan/proxychains-ng.git /tmp/proxychains-ng
+        cd /tmp/proxychains-ng
+        sudo ./configure –prefix=/usr –sysconfdir=/etc
+        sudo make && sudo make install && sudo make install-config
+        rm -rf /tmp/proxychains-ng
+        echo "Proxychains4 安装成功。"
+    fi
 }
 
 docker(){
-    curl -sSL https://get.docker.com/ | sh
+    command -v docker >/dev/null 2>&1
+	if [ $? != 0 ]; then curl -sSL https://get.docker.com/ | sh; fi
     echo "{"registry-mirrors": ["https://docker.mirrors.ustc.edu.cn"]}" > /etc/docker/daemon.json
 }
 
 ss_start(){
-    docker run -dit --name=ss-hk \
+    docker rm -f ss
+    docker run -dit --name=ss \
         -p 1080:1080 \
         --restart=always \
         -v ~/.dotfiles/config/sslocal.json:/etc/sslocal.json:ro \

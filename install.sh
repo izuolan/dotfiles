@@ -22,15 +22,20 @@ tmux(){
 }
 
 docker(){
-    curl -sSL https://get.docker.com/ | sh
-    echo "{"registry-mirrors": ["https://docker.mirrors.ustc.edu.cn"]}" > /etc/docker/daemon.json
+    command -v docker >/dev/null 2>&1
+	if [ $? != 0 ]; then curl -sSL https://get.docker.com/ | sh; fi
 }
 
 proxychains4(){
-    git clone https://github.com/rofl0r/proxychains-ng.git /tmp/proxychains-ng/
-	cd /tmp/proxychains-ng/
-	sudo ./configure –prefix=/usr –sysconfdir=/etc
-	sudo make && sudo make install && sudo make install-config
+    command -v proxychains4 >/dev/null 2>&1
+    if [ $? != 0 ]; then 
+        git clone https://git.oschina.net/zuolan/proxychains-ng.git /tmp/proxychains-ng
+        cd /tmp/proxychains-ng
+        sudo ./configure –prefix=/usr –sysconfdir=/etc
+        sudo make && sudo make install && sudo make install-config
+        rm -rf /tmp/proxychains-ng
+        echo "Proxychains4 Installed."
+    fi
 }
 
 aria2(){
