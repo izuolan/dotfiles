@@ -1,5 +1,4 @@
 #!/bin/bash
-PROXY="proxychains4 -q -f $HOME/.dotfiles/config/proxychains4.conf"
 
 software(){
     sudo apt update && sudo apt -y dist-upgrade
@@ -40,26 +39,31 @@ ss_start(){
         -p 1080:1080 \
         --restart=always \
         -v ~/.dotfiles/config/sslocal.json:/etc/sslocal.json:ro \
-        easypi/shadowsocks-libev
+        easypi/shadowsocks-libev \
         -c /etc/sslocal.json
 }
 
 zsh(){
-    $PROXY wget https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O /tmp/install.sh
-    $PROXY bash /tmp/install.sh
+    proxychains4 -q -f $HOME/.dotfiles/config/proxychains4.conf \
+        wget https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O /tmp/install.sh
+    proxychains4 -q -f $HOME/.dotfiles/config/proxychains4.conf \
+        bash /tmp/install.sh
     rm /tmp/install.sh
     ln -sf $HOME/.dotfiles/config/zshrc .zshrc
 }
 
 vim(){
-    $PROXY wget https://raw.githubusercontent.com/LER0ever/EverVim/master/Boot-EverVim.sh -O /tmp/Boot-EverVim.sh
-    $PROXY bash Boot-EverVim.sh
+    proxychains4 -q -f $HOME/.dotfiles/config/proxychains4.conf \
+        wget https://raw.githubusercontent.com/LER0ever/EverVim/master/Boot-EverVim.sh -O /tmp/Boot-EverVim.sh
+    proxychains4 -q -f $HOME/.dotfiles/config/proxychains4.conf \
+        bash Boot-EverVim.sh
     rm /tmp/Boot-EverVim.sh
 }
 
 tmux(){
     cd $HOME && rm -rf $HOME/.tmux
-    $PROXY git clone https://github.com/gpakosz/.tmux.git
+    proxychains4 -q -f $HOME/.dotfiles/config/proxychains4.conf \
+        git clone https://github.com/gpakosz/.tmux.git
     ln -sf .tmux/.tmux.conf
     cp .tmux/.tmux.conf.local .
 }
