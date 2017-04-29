@@ -2,7 +2,7 @@
     "server": "",
     "server_port": "",
     "password": "",
-    "local_address": "127.0.0.1",
+    "local_address": "0.0.0.0",
     "local_port": 1080,
     "method": "aes-256-cfb",
     "timeout": "60"

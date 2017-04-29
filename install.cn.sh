@@ -2,7 +2,7 @@
 
 software(){
     sudo apt update && sudo apt -y dist-upgrade
-    sudo apt install -y curl wget git zsh vim tmux aria2 make shadowsocks
+    sudo apt install -y sudo curl wget git zsh vim tmux aria2 make
     # vim-gnome
 }
 
@@ -34,13 +34,16 @@ docker(){
 }
 
 ss_start(){
-    docker rm -f ss
-    docker run -dit --name=ss \
-        -p 1080:1080 \
+    sudo docker rm -f ss
+    sudo docker run -dit --name=ss \
+        -p 127.0.0.1:1080:1080 \
         --restart=always \
         -v ~/.dotfiles/config/sslocal.json:/etc/sslocal.json:ro \
-        easypi/shadowsocks-libev \
-        -c /etc/sslocal.json
+        easypi/shadowsocks-libev ss-local -c /etc/sslocal.json
+}
+
+ss_stop(){
+    sudo docker rm -f ss
 }
 
 zsh(){
@@ -56,8 +59,9 @@ vim(){
     proxychains4 -q -f $HOME/.dotfiles/config/proxychains4.conf \
         wget https://raw.githubusercontent.com/LER0ever/EverVim/master/Boot-EverVim.sh -O /tmp/Boot-EverVim.sh
     proxychains4 -q -f $HOME/.dotfiles/config/proxychains4.conf \
-        bash Boot-EverVim.sh
+        bash /tmp/Boot-EverVim.sh
     rm /tmp/Boot-EverVim.sh
+    # All done with this script, now run vim/neovim and execute ":PlugInstall"
 }
 
 tmux(){

@@ -1,7 +1,7 @@
 #! /bin/bash
 CONFIG_PATH="~/.dotfiles/config"
 DEFAULT="proxychains4"
-ORIGIN_COMMAND=$(echo "$@" | sed "s/$1 //g" | sed "s/$2 //g")
+ORIGIN_COMMAND=$(echo "$@" | awk '{$1=$2="";print}')
 
 config_file(){
     CONFIG_FILE=$OPTARG
