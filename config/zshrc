@@ -142,8 +142,8 @@ alias trash-clean="rm -rf ~/.local/share/Trash/files/*"
 ##################
 
 # Aria2
-alias aria2="aria2c --conf-path=~/.dotfiles/config/aria2c.conf"
-alias paria2="~/.dotfiles/script/proxychains4.sh aria2c --conf-path=~/.dotfiles/config/aria2c.conf"
+alias aria2="aria2c --conf-path=$HOME/.dotfiles/config/aria2.conf"
+alias paria2="~/.dotfiles/script/proxychains4.sh aria2c --conf-path=$HOME/.dotfiles/config/aria2.conf"
 
 # Proxychains4
 alias spc4="sudo ~/.dotfiles/script/proxychains4.sh"

@@ -64,6 +64,10 @@ vim(){
     # All done with this script, now run vim/neovim and execute ":PlugInstall"
 }
 
+lang(){
+    dpkg-reconfigure locales
+}
+
 tmux(){
     cd $HOME && rm -rf $HOME/.tmux
     proxychains4 -q -f $HOME/.dotfiles/config/proxychains4.conf \
@@ -113,4 +117,5 @@ ss_start
 zsh
 source .zshrc
 tmux
+lang
 vim
