@@ -164,7 +164,7 @@ alias conv="~/.dotfiles/script/utf-gbk.sh"
 alias gcommit="~/.dotfiles/script/git-commit.sh"
 
 # Weather
-weather="~/.dotfiles/script/weather.py"
+alias weather="~/.dotfiles/script/weather.py"
 
 # Git.io
 alias giturl="~/.dotfiles/script/git.io.sh"
