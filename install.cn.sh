@@ -69,11 +69,9 @@ lang(){
 }
 
 tmux(){
-    cd $HOME && rm -rf $HOME/.tmux
-    proxychains4 -q -f $HOME/.dotfiles/config/proxychains4.conf \
-        git clone https://github.com/gpakosz/.tmux.git
-    ln -sf .tmux/.tmux.conf
-    cp .tmux/.tmux.conf.local .
+    cd ~/ && rm -rf ~/.tmux
+    ln -sf ~/.dotfiles/tmux ~/.tmux
+    ln -sf ~/.dotfiles/tmux.conf ~/.tmux.conf
 }
 
 aria2_config(){

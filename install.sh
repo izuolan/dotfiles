@@ -16,9 +16,8 @@ vim(){
 
 tmux(){
     cd ~/ && rm -rf ~/.tmux
-    git clone https://github.com/gpakosz/.tmux.git
-    ln -sf .tmux/.tmux.conf
-    cp .tmux/.tmux.conf.local .
+    ln -sf ~/.dotfiles/tmux ~/.tmux
+    ln -sf ~/.dotfiles/tmux.conf ~/.tmux.conf
 }
 
 docker(){
