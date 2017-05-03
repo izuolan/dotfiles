@@ -1,2 +1,0 @@
-# .tmux
-Awesome Tmux configuration.

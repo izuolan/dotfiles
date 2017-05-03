@@ -6,9 +6,7 @@ curl -sSL https://git.io/Dotfiles | bash
 ```
 # Introduction
 #### Tmux
-Base on [gpakosz](https://github.com/gpakosz/.tmux) configuration:
-
-![Tmux](https://cloud.githubusercontent.com/assets/553208/19740585/85596a5a-9bbf-11e6-8aa1-7c8d9829c008.gif)
+![Tmux](https://cloud.githubusercontent.com/assets/5241553/25659319/cda06368-3039-11e7-9992-25dd7a416272.png)
 
 #### Vim
 Base on [EverVim](https://github.com/LER0ever/EverVim):
