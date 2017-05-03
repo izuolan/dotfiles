@@ -2,7 +2,7 @@
 
 software(){
     sudo apt update && sudo apt -y dist-upgrade
-    sudo apt install -y sudo curl wget git zsh vim tmux aria2 make
+    sudo apt install -y sudo curl wget git zsh vim aria2 make
     # vim-gnome
 }
 
@@ -69,7 +69,20 @@ lang(){
 }
 
 tmux(){
+    # Install Tmux from source
+    TMUX_VERSION=2.4
+    sudo apt install -y libncurses5-dev libevent-dev
+    wget https://github.com/tmux/tmux/releases/download/${TMUX_VERSION}/tmux-${TMUX_VERSION}.tar.gz -O /tmp/tmux-${TMUX_VERSION}.tar.gz
+    tar xf tmux-${TMUX_VERSION}.tar.gz
+    cd /tmp/tmux-${TMUX_VERSION} && ./configure && make
+    sudo make install
+    rm -rf /tmp/tmux-*
+    # Tmux Powerline
+    git clone https://github.com/erikw/tmux-powerline.git ~/.tmux-powerline
+    # Copy Configuration
     cd ~/ && rm -rf ~/.tmux
+    ln -sf ~/.dotfiles/tmux/powerline/mytheme.sh ~/.tmux-powerline/themes/mytheme.sh
+    ln -sf ~/.dotfiles/tmux/powerline/tmux-powerlinerc ~/.tmux-powerlinerc
     ln -sf ~/.dotfiles/tmux ~/.tmux
     ln -sf ~/.dotfiles/tmux.conf ~/.tmux.conf
 }

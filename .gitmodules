@@ -1,0 +1,6 @@
+[submodule "env"]
+	path = tmux/plugins/tpm
+	url = https://github.com/izuolan/env
+[submodule "tmux"]
+	path = tmux
+	url = https://github.com/izuolan/.tmux
