@@ -1,5 +1,5 @@
 # dotfiles
-Awesome dotfiles and system init sctipt. Just one command to install:
+Awesome dotfiles and system init sctipt. Just one command to install（ROOT user, don't worry, this script only download files in $HOME folder and /tmp .）:
 
 ```
 curl -sSL https://git.io/Dotfiles | bash

@@ -1,8 +1,8 @@
 #!/bin/bash
 
 software(){
-    sudo apt update && sudo apt -y dist-upgrade
-    sudo apt install -y sudo curl wget git zsh vim aria2 make
+    apt update && apt -y dist-upgrade
+    apt install -y curl wget git zsh vim aria2 make
     # vim-gnome
 }
 
@@ -20,8 +20,8 @@ proxychains4(){
     if [ $? != 0 ]; then 
         git clone https://git.oschina.net/zuolan/proxychains-ng.git /tmp/proxychains-ng
         cd /tmp/proxychains-ng
-        sudo ./configure –prefix=/usr –sysconfdir=/etc
-        sudo make && sudo make install && sudo make install-config
+        ./configure –prefix=/usr –sysconfdir=/etc
+        make && make install && make install-config
         rm -rf /tmp/proxychains-ng
         echo "Proxychains4 安装成功。"
     fi
@@ -34,8 +34,8 @@ docker(){
 }
 
 ss_start(){
-    sudo docker rm -f ss
-    sudo docker run -dit --name=ss \
+    docker rm -f ss
+    docker run -dit --name=ss \
         -p 127.0.0.1:1080:1080 \
         --restart=always \
         -v ~/.dotfiles/config/sslocal.json:/etc/sslocal.json:ro \
@@ -43,7 +43,7 @@ ss_start(){
 }
 
 ss_stop(){
-    sudo docker rm -f ss
+    docker rm -f ss
 }
 
 zsh(){
@@ -71,11 +71,11 @@ lang(){
 tmux(){
     # Install Tmux from source
     TMUX_VERSION=2.4
-    sudo apt install -y libncurses5-dev libevent-dev
+    apt install -y libncurses5-dev libevent-dev
     wget https://github.com/tmux/tmux/releases/download/${TMUX_VERSION}/tmux-${TMUX_VERSION}.tar.gz -O /tmp/tmux-${TMUX_VERSION}.tar.gz
     tar xf tmux-${TMUX_VERSION}.tar.gz
     cd /tmp/tmux-${TMUX_VERSION} && ./configure && make
-    sudo make install
+    make install
     rm -rf /tmp/tmux-*
     # Tmux Powerline
     git clone https://github.com/erikw/tmux-powerline.git ~/.tmux-powerline
