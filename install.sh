@@ -2,6 +2,7 @@
 software(){
     apt update && apt -y dist-upgrade
     apt install -y curl wget git zsh vim aria2 make
+    apt-get autoremove -y
     # vim-gnome
 }
 
@@ -12,26 +13,32 @@ zsh(){
 
 vim(){
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/LER0ever/EverVim/master/Boot-EverVim.sh)"
+    apt-get install build-essential cmake
+    apt-get install python-dev python3-dev
+    cd ~/.vim/bundle/YouCompleteMe
+    ./install.py --clang-completer
+    ./install.py
+    echo "Use vim command ':PlugInstall' install plugins."
 }
 
 tmux(){
     # Install Tmux from source
     TMUX_VERSION=2.4
     apt install -y libncurses5-dev libevent-dev
-    wget https://github.com/tmux/tmux/releases/download/${TMUX_VERSION}/tmux-${TMUX_VERSION}.tar.gz -O /tmp/tmux-${TMUX_VERSION}.tar.gz
-    tar xf tmux-${TMUX_VERSION}.tar.gz
-    cd /tmp/tmux-${TMUX_VERSION} && ./configure && make
+    eval wget https://github.com/tmux/tmux/releases/download/${TMUX_VERSION}/tmux-${TMUX_VERSION}.tar.gz -O /tmp/tmux-${TMUX_VERSION}.tar.gz
+    cd /tmp && eval tar xf /tmp/tmux-${TMUX_VERSION}.tar.gz
+    eval cd /tmp/tmux-${TMUX_VERSION} && ./configure && make
     make install
     rm -rf /tmp/tmux-*
     # Tmux Powerline
-    git clone https://github.com/erikw/tmux-powerline.git ~/.tmux-powerline
+    cd ~/ && git clone https://github.com/erikw/tmux-powerline.git ~/.tmux-powerline
     # Copy Tmux Configuration
     cd ~/ && rm -rf ~/.tmux
     git clone https://github.com/izuolan/.tmux.git ~/.dotfiles/tmux
     ln -sf ~/.dotfiles/tmux/powerline/mytheme.sh ~/.tmux-powerline/themes/mytheme.sh
     ln -sf ~/.dotfiles/tmux/powerline/tmux-powerlinerc ~/.tmux-powerlinerc
     ln -sf ~/.dotfiles/tmux ~/.tmux
-    ln -sf ~/.dotfiles/tmux.conf ~/.tmux.conf
+    ln -sf ~/.dotfiles/tmux/tmux.conf ~/.tmux.conf
     # Init Plugins
     mkdir -p ~/.dotfiles/tmux/plugins
     git clone https://github.com/tmux-plugins/tpm.git ~/.dotfiles/tmux/plugins/tpm
