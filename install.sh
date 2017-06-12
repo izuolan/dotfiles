@@ -85,6 +85,7 @@ while getopts ":p:h" optname
     esac
   done
 
+software
 if [ ! -f ~/.dotfiles ]; then 
     git clone https://github.com/izuolan/dotfiles.git ~/.dotfiles
 else
@@ -92,7 +93,6 @@ else
     cd ~/.dotfiles && git pull
 fi
 chmod a+x ~/.dotfiles/script/*
-software
 docker
 proxychains4
 zsh
