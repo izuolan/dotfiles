@@ -1,4 +1,5 @@
 #!/bin/bash
+TMUX_VERSION=2.4
 
 software(){
     apt update && apt -y dist-upgrade
@@ -17,7 +18,7 @@ hosts(){
 
 proxychains4(){
     command -v proxychains4 >/dev/null 2>&1
-    if [ $? != 0 ]; then 
+    if [ $? != 0 ]; then
         git clone https://git.oschina.net/zuolan/proxychains-ng.git /tmp/proxychains-ng
         cd /tmp/proxychains-ng
         ./configure –prefix=/usr –sysconfdir=/etc
@@ -29,21 +30,8 @@ proxychains4(){
 
 docker(){
     command -v docker >/dev/null 2>&1
-	if [ $? != 0 ]; then curl -sSL https://get.docker.com/ | sh; fi
+    if [ $? != 0 ]; then curl -sSL https://get.docker.com/ | sh; fi
     echo "{"registry-mirrors": ["https://docker.mirrors.ustc.edu.cn"]}" > /etc/docker/daemon.json
-}
-
-ss_start(){
-    docker rm -f ss
-    docker run -dit --name=ss \
-        -p 127.0.0.1:1080:1080 \
-        --restart=always \
-        -v ~/.dotfiles/config/sslocal.json:/etc/sslocal.json:ro \
-        easypi/shadowsocks-libev ss-local -c /etc/sslocal.json
-}
-
-ss_stop(){
-    docker rm -f ss
 }
 
 zsh(){
@@ -70,7 +58,6 @@ lang(){
 
 tmux(){
     # Install Tmux from source
-    TMUX_VERSION=2.4
     apt install -y libncurses5-dev libevent-dev
     wget https://github.com/tmux/tmux/releases/download/${TMUX_VERSION}/tmux-${TMUX_VERSION}.tar.gz -O /tmp/tmux-${TMUX_VERSION}.tar.gz
     tar xf tmux-${TMUX_VERSION}.tar.gz
@@ -113,7 +100,13 @@ ss_config(){
     echo -n "请输入 Shadowsocks 账号的密码（输入不可见）:"; read -s SS_SERVER_PASSWORD;echo ""
     sed -i "s|"password": ""|"password": "$SS_SERVER_PASSWORD"|g" $HOME/.dotfiles/config/sslocal.json
     echo "其他情况请自行编辑 $HOME/.dotfiles/config/sslocal.json 这个文件以配置代理。"
+    docker run -dit --name=ss \
+        -p 127.0.0.1:1080:1080 \
+        --restart=always \
+        -v ~/.dotfiles/config/sslocal.json:/etc/sslocal.json:ro \
+        easypi/shadowsocks-libev ss-local -c /etc/sslocal.json
 }
+
 while getopts ":p:sh" optname
   do
     case "$optname" in
@@ -126,7 +119,7 @@ while getopts ":p:sh" optname
   done
 
 software
-if [ ! -f $HOME/.dotfiles ]; then 
+if [ ! -f $HOME/.dotfiles ]; then
     git clone https://github.com/izuolan/dotfiles.git $HOME/.dotfiles
 else
     echo ".dotfiles 已经存在，更新脚本。"
@@ -135,10 +128,9 @@ fi
 chmod a+x $HOME/.dotfiles/script/*
 hosts
 proxychains4
-docker
-ss_start
 zsh
 source .zshrc
 tmux
 lang
+docker
 vim
