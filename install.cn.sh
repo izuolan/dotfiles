@@ -3,7 +3,7 @@ TMUX_VERSION=2.4
 
 software(){
     apt update && apt -y dist-upgrade
-    apt install -y curl wget git zsh vim aria2 make
+    apt install -y curl wget git zsh vim aria2 make gcc sudo
     # vim-gnome
 }
 
@@ -22,7 +22,7 @@ proxychains4(){
         git clone https://git.oschina.net/zuolan/proxychains-ng.git /tmp/proxychains-ng
         cd /tmp/proxychains-ng
         ./configure –prefix=/usr –sysconfdir=/etc
-        make && make install && make install-config
+        make && sudo make install && sudo make install-config
         rm -rf /tmp/proxychains-ng
         echo "Proxychains4 安装成功。"
     fi
@@ -35,9 +35,9 @@ docker(){
 }
 
 zsh(){
-    proxychains4 -q -f $HOME/.dotfiles/config/proxychains4.conf \
+    sudo proxychains4 -q -f $HOME/.dotfiles/config/proxychains4.conf \
         wget https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O /tmp/install.sh
-    proxychains4 -q -f $HOME/.dotfiles/config/proxychains4.conf \
+    sudo proxychains4 -q -f $HOME/.dotfiles/config/proxychains4.conf \
         bash /tmp/install.sh
     rm /tmp/install.sh
     ln -sf $HOME/.dotfiles/config/zshrc .zshrc
