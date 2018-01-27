@@ -49,7 +49,7 @@ vim(){
     proxychains4 -q -f $HOME/.dotfiles/config/proxychains4.conf \
         bash /tmp/Boot-EverVim.sh
     rm /tmp/Boot-EverVim.sh
-    # All done with this script, now run vim/neovim and execute ":PlugInstall"
+    echo "All done with this script, now run vim/neovim and execute ':PlugInstall'"
 }
 
 lang(){
@@ -60,7 +60,7 @@ tmux(){
     # Install Tmux from source
     apt install -y libncurses5-dev libevent-dev
     wget https://github.com/tmux/tmux/releases/download/${TMUX_VERSION}/tmux-${TMUX_VERSION}.tar.gz -O /tmp/tmux-${TMUX_VERSION}.tar.gz
-    tar xf tmux-${TMUX_VERSION}.tar.gz
+    cd /tmp && tar xf tmux-${TMUX_VERSION}.tar.gz
     cd /tmp/tmux-${TMUX_VERSION} && ./configure && make
     make install
     rm -rf /tmp/tmux-*
@@ -72,7 +72,7 @@ tmux(){
     ln -sf ~/.dotfiles/tmux/powerline/mytheme.sh ~/.tmux-powerline/themes/mytheme.sh
     ln -sf ~/.dotfiles/tmux/powerline/tmux-powerlinerc ~/.tmux-powerlinerc
     ln -sf ~/.dotfiles/tmux ~/.tmux
-    ln -sf ~/.dotfiles/tmux.conf ~/.tmux.conf
+    ln -sf ~/.dotfiles/tmux/tmux.conf ~/.tmux.conf
     # Init Plugins
     mkdir -p ~/.dotfiles/tmux/plugins
     git clone https://github.com/tmux-plugins/tpm.git ~/.dotfiles/tmux/plugins/tpm
